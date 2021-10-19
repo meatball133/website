@@ -670,3 +670,8 @@ export type SharePlatform =
   | 'reddit'
   | 'linkedin'
   | 'devto'
+
+export type TestFile = {
+  filename: string
+  content: string
+}
