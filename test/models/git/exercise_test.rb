@@ -237,13 +237,13 @@ module Git
       assert_equal(expected, exercise.example_files)
     end
 
-    test "retrieves tests" do
+    test "retrieves test files" do
       exercise = Git::Exercise.new(:bob, "practice", "HEAD",
         repo_url: TestHelpers.git_repo_url("track-with-exercises"))
 
       expected = { "bob_test.rb" => "test content\n" }
 
-      assert_equal(expected, exercise.tests)
+      assert_equal(expected, exercise.test_files)
     end
 
     test "retrieves exemplar files" do

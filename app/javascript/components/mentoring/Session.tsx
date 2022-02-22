@@ -57,7 +57,7 @@ export type SessionProps = {
   discussion: Discussion
   iterations: readonly Iteration[]
   instructions: string
-  tests: readonly TestFile[]
+  testFiles: readonly TestFile[]
   userHandle: string
   notes: string
   outOfDate: boolean
@@ -84,7 +84,7 @@ export const Session = (props: SessionProps): JSX.Element => {
     links,
     iterations: initialIterations,
     instructions,
-    tests,
+    testFiles,
     discussion,
     notes,
     mentorSolution,
@@ -110,11 +110,8 @@ export const Session = (props: SessionProps): JSX.Element => {
   })
 
   const [isLinked, setIsLinked] = useState(false)
-  const {
-    currentIteration,
-    handleIterationClick,
-    handleIterationScroll,
-  } = useIterationScrolling({ iterations: iterations, on: isLinked })
+  const { currentIteration, handleIterationClick, handleIterationScroll } =
+    useIterationScrolling({ iterations: iterations, on: isLinked })
 
   return (
     <div className="c-mentor-discussion">
@@ -143,7 +140,7 @@ export const Session = (props: SessionProps): JSX.Element => {
             <IterationView
               iterations={iterations}
               instructions={instructions}
-              tests={tests}
+              testFiles={testFiles}
               currentIteration={currentIteration}
               onClick={handleIterationClick}
               isOutOfDate={outOfDate}

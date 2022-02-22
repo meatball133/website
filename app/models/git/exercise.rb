@@ -131,7 +131,7 @@ module Git
       {}
     end
 
-    def tests
+    def test_files
       test_filepaths.index_with do |filepath|
         read_file_blob(filepath)
       end

@@ -85,7 +85,7 @@ import { Request } from '../hooks/request-query'
 import { Request as MentoringInboxRequest } from '../components/mentoring/Inbox'
 import { camelizeKeys } from 'humps'
 function camelizeKeysAs<T>(object: any): T {
-  return (camelizeKeys(object) as unknown) as T
+  return camelizeKeys(object) as unknown as T
 }
 
 // Add all react components here.
@@ -145,7 +145,7 @@ initReact({
       exercise={camelizeKeysAs<MentorSessionExercise>(data.exercise)}
       iterations={camelizeKeysAs<Iteration[]>(data.iterations)}
       instructions={data.instructions}
-      tests={data.tests}
+      testFiles={data.test_files}
       links={camelizeKeysAs<MentoringSessionLinks>(data.links)}
       request={camelizeKeysAs<MentorSessionRequest>(data.request)}
       scratchpad={camelizeKeysAs<MentoringSessionScratchpad>(data.scratchpad)}

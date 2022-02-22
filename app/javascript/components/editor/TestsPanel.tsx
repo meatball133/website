@@ -5,10 +5,10 @@ import { useHighlighting } from '../../utils/highlight'
 import { TestFile } from '../types'
 
 export const TestsPanel = ({
-  tests,
+  testFiles,
   highlightjsLanguage,
 }: {
-  tests: readonly TestFile[]
+  testFiles: readonly TestFile[]
   highlightjsLanguage: string
 }): JSX.Element => {
   const ref = useHighlighting<HTMLDivElement>()
@@ -20,15 +20,15 @@ export const TestsPanel = ({
       className="tests c-code-pane"
       ref={ref}
     >
-      {tests.map((test) => {
+      {testFiles.map((testFile) => {
         return (
-          <pre key={test.filename}>
+          <pre key={testFile.filename}>
             <code
               className={highlightjsLanguage}
               data-highlight-line-numbers={true}
               data-highlight-line-number-start={1}
             >
-              {test.content}
+              {testFile.content}
             </code>
           </pre>
         )

@@ -34,7 +34,7 @@ type EditorPanels = {
     exampleFiles: File[]
   }
   tests?: {
-    tests: readonly TestFile[]
+    testFiles: readonly TestFile[]
     highlightjsLanguage: string
   }
   results: {

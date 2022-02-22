@@ -13,13 +13,13 @@ export const FilePanel = ({
   language,
   indentSize,
   instructions,
-  tests,
+  testFiles,
 }: {
   files: readonly File[]
   language: string
   indentSize: number
   instructions?: string
-  tests?: readonly TestFile[]
+  testFiles?: readonly TestFile[]
 }): JSX.Element | null => {
   const [tab, setTab] = useState<string>('')
 
@@ -56,7 +56,7 @@ export const FilePanel = ({
             </Tab>
           ) : null}
 
-          {tests ? (
+          {testFiles ? (
             <Tab key="tests" id="tests" context={TabsContext}>
               Tests
             </Tab>
@@ -88,9 +88,9 @@ export const FilePanel = ({
               />
             </Tab.Panel>
           ) : null}
-          {tests ? (
+          {testFiles ? (
             <Tab.Panel key="tests" id="tests" context={TabsContext}>
-              {tests.map((test) => {
+              {testFiles.map((test) => {
                 return (
                   <FileViewer
                     key={test.filename}
