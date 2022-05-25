@@ -4,6 +4,7 @@ import { Icon } from '../common/Icon'
 import { Settings } from './header/Settings'
 import { ActionMore } from './header/ActionMore'
 import { Hints } from './header/Hints'
+import { Help } from './header/Help'
 
 export const Header = ({ children }: { children: React.ReactNode }) => (
   <div className="header">{children}</div>
@@ -52,3 +53,5 @@ Header.ActionKeyboardShortcuts = forwardRef<
 Header.ActionSettings = Settings
 
 Header.ActionMore = ActionMore
+
+Header.ActionHelp = Help

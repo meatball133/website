@@ -315,6 +315,7 @@ export default ({
             />
             <div className="options">
               <Header.ActionHints assignment={panels.instructions.assignment} />
+              <Header.ActionHelp helpHtml={track.helpHtml} />
               <Header.ActionSettings
                 settings={settings}
                 setSettings={setSettings}

@@ -55,7 +55,7 @@ export type Props = {
   defaultSettings: Partial<EditorSettings>
   autosave: AutosaveConfig
   panels: EditorPanels
-  track: Track
+  track: Track & { helpHtml: string }
   exercise: Exercise
   links: Links
   features?: EditorFeatures

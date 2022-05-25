@@ -32,7 +32,8 @@ module ReactComponents
           },
           track: {
             title: track.title,
-            slug: track.slug
+            slug: track.slug,
+            help_html: Markdown::Parse.(track.git.help)
           },
           exercise: {
             title: solution.exercise.title,
