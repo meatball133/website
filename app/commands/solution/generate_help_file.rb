@@ -18,44 +18,36 @@ class Solution
 
     private
     def tests
-      tests_intro_text = I18n.t("exercises.documents.tests_intro").strip
-      tests_text = Markdown::Render.(solution.track.git.tests, :text).strip
-
       <<~TEXT.strip
-        ## #{tests_intro_text}
+        ## #{I18n.t('exercises.documents.tests_header')}
 
-        #{tests_text}
+        #{Markdown::Render.(track.git.tests, :text).strip}
       TEXT
     end
 
     def submitting
-      submitting_solution_intro_text = I18n.t("exercises.documents.submitting_solution_intro").strip
-
-      submitting_solution_text = I18n.t("exercises.documents.submitting_solution",
-        solution_file_paths: solution.exercise.git.solution_filepaths.join(" ")).strip
-
       <<~TEXT.strip
-        ## #{submitting_solution_intro_text}
+        ## #{I18n.t('exercises.documents.submitting_solution_header')}
 
-        #{submitting_solution_text}
+        #{I18n.t('exercises.documents.submitting_solution', solution_file_paths: exercise.git.solution_filepaths.join(' '))}
       TEXT
     end
 
     def help
-      help_intro_text = I18n.t("exercises.documents.help_intro").strip
-
-      help_text = I18n.t("exercises.documents.help",
-        track_title: solution.track.title, track_slug: solution.track.slug).strip
-
-      track_help_text = Markdown::Render.(solution.track.git.help, :text).strip
-
       <<~TEXT.strip
-        ## #{help_intro_text}
+        ## #{I18n.t('exercises.documents.help_header')}
 
-        #{help_text}
+        #{I18n.t('exercises.documents.help_intro')}
 
-        #{track_help_text}
+        #{I18n.t('exercises.documents.help_pages', track_title: track.title, track_slug: track.slug)}
+
+        #{I18n.t('exercises.documents.help_submit_incomplete')}
+
+        #{Markdown::Render.(track.git.help, :text).strip}
       TEXT
     end
+
+    def track = solution.track
+    def exercise = solution.exercise
   end
 end

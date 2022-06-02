@@ -11,9 +11,9 @@ class Track
       <<~TEXT.strip
         # Help
 
-        #{general_help_text}
-
         #{track_help_text}
+
+        #{general_help_text}#{'        '}
       TEXT
     end
 
