@@ -9,5 +9,6 @@ en:
       submitting_solution: "You can submit your solution using the `exercism submit %{solution_file_paths}` command.\nThis command will upload your solution to the Exercism website and print the solution page's URL.\n\nIt's possible to submit an incomplete solution which allows you to:\n\n- See how others have completed the exercise\n- Request help from a mentor"
       help_header: "Need to get help?"
       help_intro: "If you'd like help solving the exercise, check the following pages:"
+      help_check_pages: "Should those resources not suffice, check the following pages:"
       help_pages: "- The [%{track_title} track's documentation](https://exercism.org/docs/tracks/%{track_slug})\n- [Exercism's support channel on gitter](https://gitter.im/exercism/support)\n- The [Frequently Asked Questions](https://exercism.org/docs/using/faqs)"
       help_submit_incomplete: "Should those resources not suffice, you could submit your (incomplete) solution to request mentoring."
