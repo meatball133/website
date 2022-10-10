@@ -3,13 +3,7 @@ module User::Roles
   def admin? = roles.include?(:admin)
   def staff? = roles.include?(:staff)
   def maintainer? = roles.include?(:maintainer)
-
-  def supermentor?
-    # TODO: enable once we're ready for supermentors
-    return false if Rails.env.production?
-
-    roles.include?(:supermentor)
-  end
-
+  def supermentor? = roles.include?(:supermentor)
   def roles = super.to_a.map(&:to_sym).to_set
+  def can_view_approaches? = admin? || staff? || maintainer? || supermentor?
 end

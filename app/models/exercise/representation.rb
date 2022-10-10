@@ -9,7 +9,7 @@ class Exercise::Representation < ApplicationRecord
   belongs_to :track, optional: true
   has_one :solution, through: :source_submission
 
-  enum feedback_type: { essential: 0, actionable: 1, non_actionable: 2 }, _prefix: :feedback
+  enum feedback_type: { essential: 0, actionable: 1, non_actionable: 2, celebratory: 3 }, _prefix: :feedback
 
   has_many :submission_representations,
     class_name: "Submission::Representation",
@@ -24,6 +24,8 @@ class Exercise::Representation < ApplicationRecord
   scope :mentored_by, ->(mentor) { where(submission_representations: mentor.submission_representations) }
   scope :for_track, ->(track) { where(track:) }
 
+  delegate :analyzer_feedback, to: :source_submission
+
   before_create do
     self.uuid = SecureRandom.compact_uuid
     self.track_id = exercise.track_id
@@ -36,17 +38,10 @@ class Exercise::Representation < ApplicationRecord
     submission_representations.count
   end
 
-  def has_essential_feedback?
-    has_feedback? && feedback_essential?
-  end
-
-  def has_actionable_feedback?
-    has_feedback? && feedback_actionable?
-  end
-
-  def has_non_actionable_feedback?
-    has_feedback? && feedback_non_actionable?
-  end
+  def has_essential_feedback? = has_feedback? && feedback_essential?
+  def has_actionable_feedback? = has_feedback? && feedback_actionable?
+  def has_non_actionable_feedback? = has_feedback? && feedback_non_actionable?
+  def has_celebratory_feedback? = has_feedback? && feedback_celebratory?
 
   def has_feedback?
     [feedback_markdown, feedback_author_id, feedback_type].all?(&:present?)

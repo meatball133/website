@@ -5,6 +5,7 @@ en:
       not_supermentor: "You do not have supermentor permissions"
       not_maintainer: "You do not have maintainer permissions"
       duplicate_submission: "No files you submitted have changed since your last submission"
+      duplicate_video: "The video has already been submitted by someone else"
       exercise_not_found: "The exercise you specified could not be found"
       invalid_auth_token: "The auth token provided is invalid"
       invalid_mentor_student_relationship: "There is not a valid relationship between you and this student"
@@ -49,3 +50,4 @@ en:
       invalid_metric_period: "The metric period is invalid"
       invalid_metric_type: "The metric type is invalid"
       profile_criteria_not_fulfilled: "You need at least 5 reputation to create a profile"
+      invalid_community_video_url: "We could not find a YouTube or Vimeo video matching this URL"

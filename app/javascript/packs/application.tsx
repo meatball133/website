@@ -28,6 +28,10 @@ const CLIWalkthroughButton = lazy(
 
 const ImpactStat = lazy(() => import('../components/impact/stat'))
 const ImpactMap = lazy(() => import('../components/impact/map'))
+const ImpactChart = lazy(() => import('../components/impact/Chart'))
+const ImpactTestimonials = lazy(
+  () => import('../components/impact/Testimonials')
+)
 
 import StudentTracksList from '../components/student/TracksList'
 import StudentExerciseList from '../components/student/ExerciseList'
@@ -134,6 +138,7 @@ initReact({
   ),
   'common-expander': (data: any) => (
     <Common.Expander
+      contentIsSafe={data.content_is_safe}
       content={data.content}
       buttonTextCompressed={data.button_text_compressed}
       buttonTextExpanded={data.button_text_expanded}
@@ -168,6 +173,12 @@ initReact({
       request={camelizeKeysAs<Request>(data.request)}
     />
   ),
+
+  'track-approaches': (data: any) => (
+    <TrackComponents.Approaches data={camelizeKeys(data)} />
+  ),
+  'track-approach': (data: any) => <TrackComponents.Approach />,
+
   'track-exercise-makers-button': (data: any) => (
     <TrackComponents.ExerciseMakersButton
       avatarUrls={camelizeKeysAs<readonly string[]>(data.avatar_urls)}
@@ -381,6 +392,16 @@ initReact({
   'impact-stat': (data: any) => (
     <Suspense fallback={renderLoader()}>
       <ImpactStat metricType={data.type} initialValue={data.value} />
+    </Suspense>
+  ),
+  'impact-chart': (data: any) => (
+    <Suspense fallback={renderLoader()}>
+      <ImpactChart data={camelizeKeys(data)} />
+    </Suspense>
+  ),
+  'impact-testimonials': (data: any) => (
+    <Suspense fallback={renderLoader()}>
+      <ImpactTestimonials data={data} />
     </Suspense>
   ),
   'impact-map': (data: any) => {

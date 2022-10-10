@@ -1,6 +1,7 @@
 import { Props as ConceptWidgetProps } from './common/ConceptWidget'
 import { Props as ExerciseWidgetProps } from './common/ExerciseWidget'
 import { DiscussionPostProps } from './mentoring/discussion/DiscussionPost'
+import { Scratchpad } from './mentoring/Session'
 
 export type Size = 'small' | 'large'
 
@@ -435,10 +436,18 @@ export type MentoredTrack = {
   }
 }
 
+export type RepresentationExercise = Pick<
+  MentorSessionExercise,
+  'title' | 'iconUrl'
+>
+export type RepresentationTrack = Pick<
+  MentorSessionTrack,
+  'title' | 'iconUrl' | 'highlightjsLanguage'
+>
 export type Representation = {
   id: number
-  exercise: { title: string; iconUrl: string }
-  track: { title: string; iconUrl: string; highlightjsLanguage:string }
+  exercise: RepresentationExercise
+  track: RepresentationTrack
   numSubmissions: number
   feedbackHtml: string
   feedbackType: RepresentationFeedbackType | null
@@ -459,13 +468,32 @@ export type RepresentationFeedbackType =
   | 'essential'
   | 'actionable'
   | 'non_actionable'
+  | 'celebratory'
 
 export type CompleteRepresentationData = {
   representation: RepresentationData
   examples: Pick<RepresentationData, 'files' | 'instructions' | 'tests'>[]
   mentor: Pick<User, 'avatarUrl' | 'handle'> & { name: string }
+  mentorSolution: CommunitySolution
   links: { back: string; success: string }
-  rules: { globalHtml: string }
+  guidance: Guidance
+  scratchpad: Scratchpad
+  analyzerFeedback?: AnalyzerFeedback
+}
+
+export type Guidance = {
+  representations: string
+  exercise: string
+  track: string
+  exemplarFiles: MentoringSessionExemplarFile[]
+  links: GuidanceLinks
+}
+
+export type GuidanceLinks = {
+  improveExerciseGuidance: string
+  improveTrackGuidance: string
+  improveRepresenterGuidance?: string
+  representationFeedbackGuide: string
 }
 
 export type Contributor = {

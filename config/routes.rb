@@ -43,6 +43,13 @@ Rails.application.routes.draw do
     resource :organization_updates, only: [:create]
   end
 
+  # ##### #
+  # Admin #
+  # ##### #
+  namespace :admin do
+    resources :community_videos
+  end
+
   # ############ #
   # Normal pages #
   # ############ #
@@ -141,9 +148,21 @@ Rails.application.routes.draw do
       resource :mentor_request, only: %i[new show], controller: "tracks/mentor_requests" do
         get :no_slots_remaining
       end
-      resources :mentor_discussions, only: %i[index show], controller: "tracks/mentor_discussions"
-
-      resources :solutions, only: %i[index show], controller: "tracks/community_solutions"
+      resources :mentor_discussions, only: %i[index show], controller: "tracks/mentor_discussions" do
+        collection do
+          get :tooltip_locked
+        end
+      end
+      resources :solutions, only: %i[index show], controller: "tracks/community_solutions" do
+        collection do
+          get :tooltip_locked
+        end
+      end
+      resources :approaches, only: %i[index show], controller: "tracks/approaches" do
+        collection do
+          get :tooltip_locked
+        end
+      end
     end
 
     member do

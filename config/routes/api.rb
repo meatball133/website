@@ -233,6 +233,14 @@ namespace :api do
       get 'periodic', to: "periodic#index"
     end
 
+    namespace :impact do
+      resources :testimonials, only: %i[index], param: :uuid
+    end
+
+    resources :community_videos, only: %i[create] do
+      get :lookup, on: :collection
+    end
+
     post "markdown/parse" => "markdown#parse", as: "parse_markdown"
   end
 end

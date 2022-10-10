@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import { TrackFilterList } from './TrackFilterList'
 import { Request } from '../../../hooks/request-query'
 import { AutomationStatus } from '../../types'
@@ -70,6 +70,22 @@ export function Representations({
     withFeedback
   )
 
+  // timeout is stored in a useRef, so it can be cancelled
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const timer = useRef<any>()
+
+  const handlePageResetOnInputChange = useCallback(
+    (input: string) => {
+      //clears it on any input
+      clearTimeout(timer.current)
+      if (criteria && (input.length > 2 || input.length === 0)) {
+        timer.current = setTimeout(() => setPage(1), 500)
+      }
+    },
+
+    [criteria, setPage]
+  )
+
   return (
     <div className="c-mentor-inbox">
       {!isIntroducerHidden && (
@@ -84,9 +100,11 @@ export function Representations({
           >
             <a href={links.withoutFeedback}>Need feedback</a>
 
+
             {resolvedData ? (
               <div className="count">{feedbackCount['without_feedback']?.toLocaleString()}</div>
             ) : null}
+
           </StatusTab>
           <StatusTab<AutomationStatus>
             status="with_feedback"
@@ -126,7 +144,10 @@ export function Representations({
           <div className="flex flex-row flex-grow justify-between">
             <SearchInput
               className="mr-24"
-              setFilter={setCriteria}
+              setFilter={(input) => {
+                setCriteria(input)
+                handlePageResetOnInputChange(input)
+              }}
               filter={criteria}
               placeholder="Filter by exercise (min 3 chars)"
             />
@@ -135,6 +156,7 @@ export function Representations({
               sortOptions={sortOptions}
               order={order}
               setOrder={setOrder}
+              setPage={setPage}
             />
           </div>
         </header>

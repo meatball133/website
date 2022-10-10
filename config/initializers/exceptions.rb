@@ -2,6 +2,8 @@ class BadgeCriteriaNotFulfilledError < RuntimeError; end
 
 class DuplicateSubmissionError < RuntimeError; end
 
+class DuplicateVideoError < RuntimeError; end
+
 class ExerciseLockedError < RuntimeError; end
 
 class InvalidTrackSlugsError < RuntimeError
@@ -52,3 +54,5 @@ class MissingMetricPeriodError < RuntimeError; end
 class InvalidMetricPeriodError < RuntimeError; end
 
 class InvalidMetricTypeError < RuntimeError; end
+
+class InvalidCommunityVideoUrl < RuntimeError; end
