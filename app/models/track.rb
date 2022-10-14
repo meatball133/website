@@ -45,10 +45,11 @@ class Track < ApplicationRecord
     find_by(slug:)
   end
 
-  def recache_num_exercises!
-    available_exercises = course? ? exercises : practice_exercises
-    update_column(:num_exercises, available_exercises.published.count)
-  end
+  def recache_num_exercises! = update_column(:num_exercises, available_exercises.published.count)
+
+  def available_exercises = course? ? exercises : practice_exercises
+  def available_concept_exercises = course? ? concept_exercises : ConceptExercise.none
+  def available_practice_exercises = practice_exercises
 
   def to_param = slug
 

@@ -193,6 +193,57 @@ class TrackTest < ActiveSupport::TestCase
     assert_equal 1, track.reload.num_exercises
   end
 
+  test "available_exercises" do
+    track = create :track, course: true
+    assert_empty track.available_exercises
+
+    pe_1 = create :practice_exercise, track: track, status: :beta
+    assert_equal [pe_1], track.available_exercises.order(:id)
+
+    ce_1 = create :concept_exercise, track: track, status: :active
+    assert_equal [pe_1, ce_1], track.available_exercises.order(:id)
+
+    pe_2 = create :practice_exercise, track: track, status: :wip
+    assert_equal [pe_1, ce_1, pe_2], track.available_exercises.order(:id)
+
+    track.update!(course: false)
+    assert_equal [pe_1, pe_2], track.available_exercises.order(:id)
+  end
+
+  test "available_concept_exercises" do
+    track = create :track, course: true
+    assert_empty track.available_concept_exercises
+
+    create :practice_exercise, track: track, status: :beta
+    assert_empty track.available_concept_exercises
+
+    ce_1 = create :concept_exercise, track: track, status: :active
+    assert_equal [ce_1], track.available_concept_exercises.order(:id)
+
+    ce_2 = create :concept_exercise, track: track, status: :wip
+    assert_equal [ce_1, ce_2], track.available_concept_exercises.order(:id)
+
+    track.update!(course: false)
+    assert_empty track.available_concept_exercises
+  end
+
+  test "available_practice_exercises" do
+    track = create :track, course: true
+    assert_empty track.available_practice_exercises
+
+    pe_1 = create :practice_exercise, track: track, status: :beta
+    assert_equal [pe_1], track.available_practice_exercises.order(:id)
+
+    create :concept_exercise, track: track, status: :active
+    assert_equal [pe_1], track.available_practice_exercises.order(:id)
+
+    pe_2 = create :practice_exercise, track: track, status: :wip
+    assert_equal [pe_1, pe_2], track.available_practice_exercises.order(:id)
+
+    track.update!(course: false)
+    assert_equal [pe_1, pe_2], track.available_practice_exercises.order(:id)
+  end
+
   test "representations" do
     track = create :track
     exercise_1 = create :practice_exercise, track: track
