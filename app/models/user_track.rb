@@ -47,38 +47,23 @@ class UserTrack < ApplicationRecord
   end
 
   memoize
-  def exercises
-    enabled_exercises(track.exercises)
-  end
+  def exercises = track.exercises.available(self)
 
   memoize
-  def concept_exercises
-    enabled_exercises(track.concept_exercises)
-  end
+  def concept_exercises = track.concept_exercises.available(self)
 
   memoize
-  def practice_exercises
-    enabled_exercises(track.practice_exercises)
-  end
+  def practice_exercises = track.practice_exercises.available(self)
 
-  def concept_exercises_for_concept(concept)
-    enabled_exercises(concept.concept_exercises)
-  end
-
-  def practice_exercises_for_concept(concept)
-    enabled_exercises(concept.practice_exercises)
-  end
+  def concept_exercises_for_concept(concept) = concept.concept_exercises.available(self)
+  def practice_exercises_for_concept(concept) = concept.practice_exercises.available(self)
 
   def unlocked_concepts_for_exercise(exercise)
     exercise.unlocked_concepts.to_a.filter { |c| concept_unlocked?(c) }
   end
 
   def unlocked_exercises_for_exercise(exercise)
-    enabled_exercises(exercise.unlocked_exercises).to_a.filter { |e| exercise_unlocked?(e) }
-  end
-
-  def enabled_exercises(exercises)
-    exercises.published.or(exercises.started(self))
+    exercise.unlocked_exercises.available(self).to_a.filter { |e| exercise_unlocked?(e) }
   end
 
   def external? = false

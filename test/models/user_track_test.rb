@@ -539,7 +539,7 @@ class UserTrackTest < ActiveSupport::TestCase
       active_concept_exercise,
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
+    ], user_track.exercises.order(:id)
   end
 
   test "exercises includes deprecated exercises that the user started" do
@@ -567,7 +567,7 @@ class UserTrackTest < ActiveSupport::TestCase
       beta_practice_exercise,
       active_practice_exercise,
       deprecated_practice_exercise
-    ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
+    ], user_track.exercises.order(:id)
   end
 
   test "concept_exercises" do
@@ -587,7 +587,7 @@ class UserTrackTest < ActiveSupport::TestCase
     assert_equal [
       beta_concept_exercise,
       active_concept_exercise
-    ].map(&:slug).sort, user_track.concept_exercises.map(&:slug).sort
+    ], user_track.concept_exercises.order(:id)
   end
 
   test "concept_exercises includes deprecated concept exercises that the user started" do
@@ -609,7 +609,7 @@ class UserTrackTest < ActiveSupport::TestCase
       beta_concept_exercise,
       active_concept_exercise,
       deprecated_concept_exercise
-    ].map(&:slug).sort, user_track.concept_exercises.map(&:slug).sort
+    ], user_track.concept_exercises.order(:id)
   end
 
   test "practice_exercises" do
@@ -629,7 +629,7 @@ class UserTrackTest < ActiveSupport::TestCase
     assert_equal [
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.practice_exercises.map(&:slug).sort
+    ], user_track.practice_exercises.order(:id)
   end
 
   test "practice_exercises includes deprecated practice exercises that the user started" do
@@ -651,7 +651,7 @@ class UserTrackTest < ActiveSupport::TestCase
       beta_practice_exercise,
       active_practice_exercise,
       deprecated_practice_exercise
-    ].map(&:slug).sort, user_track.practice_exercises.map(&:slug).sort
+    ], user_track.practice_exercises.order(:id)
   end
 
   test "concept_exercises_for_concept" do
@@ -686,8 +686,7 @@ class UserTrackTest < ActiveSupport::TestCase
     pe_1 = create :practice_exercise, :random_slug, track: track
     pe_1.practiced_concepts << c_1
 
-    expected = [ce_1, ce_2].map(&:slug).sort
-    assert_equal expected, user_track.concept_exercises_for_concept(c_1).map(&:slug).sort
+    assert_equal [ce_1, ce_2], user_track.concept_exercises_for_concept(c_1).order(:id)
   end
 
   test "practice_exercises_for_concept" do
@@ -722,8 +721,7 @@ class UserTrackTest < ActiveSupport::TestCase
     ce_1 = create :concept_exercise, :random_slug, track: track
     ce_1.taught_concepts << c_1
 
-    expected = [pe_1, pe_2].map(&:slug).sort
-    assert_equal expected, user_track.practice_exercises_for_concept(c_1).map(&:slug).sort
+    assert_equal [pe_1, pe_2], user_track.practice_exercises_for_concept(c_1).order(:id)
   end
 
   test "unlocked_exercises_for_exercise" do
