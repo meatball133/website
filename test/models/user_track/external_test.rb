@@ -104,7 +104,7 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
       active_concept_exercise,
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
+    ], user_track.exercises.order(:id)
 
     track.update(course: false)
     user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
@@ -113,7 +113,7 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     assert_equal [
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
+    ], user_track.exercises.order(:id)
   end
 
   test "concept_exercises" do
@@ -132,7 +132,7 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     assert_equal [
       beta_concept_exercise,
       active_concept_exercise
-    ].map(&:slug).sort, user_track.concept_exercises.map(&:slug).sort
+    ], user_track.concept_exercises.order(:id)
 
     track.update(course: false)
     user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
@@ -155,14 +155,14 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     assert_equal [
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.practice_exercises.map(&:slug).sort
+    ], user_track.practice_exercises.order(:id)
 
     track.update(course: false)
     user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
     assert_equal [
       beta_practice_exercise,
       active_practice_exercise
-    ].map(&:slug).sort, user_track.practice_exercises.map(&:slug).sort
+    ], user_track.practice_exercises.order(:id)
   end
 
   test "concept_exercises_for_concept" do
@@ -196,8 +196,8 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     pe_1 = create :practice_exercise, :random_slug, track: track
     pe_1.practiced_concepts << c_1
 
-    expected = [ce_1, ce_2].map(&:slug).sort
-    assert_equal expected, user_track.concept_exercises_for_concept(c_1).map(&:slug).sort
+    expected = [ce_1, ce_2]
+    assert_equal expected, user_track.concept_exercises_for_concept(c_1)
   end
 
   test "practice_exercises_for_concept" do
@@ -231,7 +231,6 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     ce_1 = create :concept_exercise, :random_slug, track: track
     ce_1.taught_concepts << c_1
 
-    expected = [pe_1, pe_2].map(&:slug).sort
-    assert_equal expected, user_track.practice_exercises_for_concept(c_1).map(&:slug).sort
+    assert_equal [pe_1, pe_2], user_track.practice_exercises_for_concept(c_1).order(:id)
   end
 end
