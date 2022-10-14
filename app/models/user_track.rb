@@ -78,7 +78,7 @@ class UserTrack < ApplicationRecord
   end
 
   def enabled_exercises(exercises)
-    exercises.published.or(exercises.where(id: solutions.select(:exercise_id)))
+    exercises.published.or(exercises.started(self))
   end
 
   def external? = false
