@@ -19,37 +19,18 @@ class UserTrack
     def anonymous_during_mentoring? = true
 
     memoize
-    def exercises
-      enabled_exercises(track.exercises)
-    end
+    def exercises = track.available_exercises.published
 
     memoize
-    def concept_exercises
-      enabled_exercises(track.concept_exercises)
-    end
+    def concept_exercises = track.available_concept_exercises.published
 
     memoize
-    def practice_exercises
-      enabled_exercises(track.practice_exercises)
-    end
+    def practice_exercises = track.available_practice_exercises.published
 
-    def concept_exercises_for_concept(concept)
-      enabled_exercises(concept.concept_exercises)
-    end
-
-    def practice_exercises_for_concept(concept)
-      enabled_exercises(concept.practice_exercises)
-    end
-
+    def concept_exercises_for_concept(concept) = concept.concept_exercises.published
+    def practice_exercises_for_concept(concept) = concept.practice_exercises.published
     def unlocked_concepts_for_exercise(exercise) = exercise.unlocked_concepts
-
-    def unlocked_exercises_for_exercise(exercise)
-      enabled_exercises(exercise.unlocked_exercises)
-    end
-
-    def enabled_exercises(exercises)
-      exercises.published
-    end
+    def unlocked_exercises_for_exercise(exercise) = exercise.unlocked_exercises.published
 
     #######################
     # Non-summary methods #

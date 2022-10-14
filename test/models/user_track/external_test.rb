@@ -85,7 +85,7 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
   end
 
   test "exercises" do
-    track = create :track
+    track = create :track, course: true
     user_track = UserTrack::External.new(track)
 
     create :concept_exercise, :random_slug, track: track, status: :wip
@@ -105,10 +105,19 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
       beta_practice_exercise,
       active_practice_exercise
     ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
+
+    track.update(course: false)
+    user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
+
+    # wip, deprecated and concept exercises are not included
+    assert_equal [
+      beta_practice_exercise,
+      active_practice_exercise
+    ].map(&:slug).sort, user_track.exercises.map(&:slug).sort
   end
 
   test "concept_exercises" do
-    track = create :track
+    track = create :track, course: true
     user_track = UserTrack::External.new(track)
 
     create :concept_exercise, :random_slug, track: track, status: :wip
@@ -124,10 +133,14 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
       beta_concept_exercise,
       active_concept_exercise
     ].map(&:slug).sort, user_track.concept_exercises.map(&:slug).sort
+
+    track.update(course: false)
+    user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
+    assert_empty user_track.concept_exercises
   end
 
   test "practice_exercises" do
-    track = create :track
+    track = create :track, course: true
     user_track = UserTrack::External.new(track)
 
     create :practice_exercise, :random_slug, track: track, status: :wip
@@ -139,6 +152,13 @@ class UserTrack::ExternalTest < ActiveSupport::TestCase
     create :concept_exercise, :random_slug, track: track
 
     # wip and deprecated exercises are not included
+    assert_equal [
+      beta_practice_exercise,
+      active_practice_exercise
+    ].map(&:slug).sort, user_track.practice_exercises.map(&:slug).sort
+
+    track.update(course: false)
+    user_track = UserTrack::External.new(track) # Create new instance to not memoize previous value
     assert_equal [
       beta_practice_exercise,
       active_practice_exercise
