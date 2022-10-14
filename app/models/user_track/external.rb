@@ -18,6 +18,8 @@ class UserTrack
     def tutorial_exercise_completed? = false
     def anonymous_during_mentoring? = true
 
+    def solutions = Solution.none
+
     memoize
     def exercises = track.available_exercises.published
 

@@ -58,6 +58,7 @@ class ExerciseTest < ActiveSupport::TestCase
     user_track_2 = create :user_track, track: track, user: user_2
 
     assert_empty Exercise.started(user_track_1)
+    assert_empty Exercise.started(user_track_2)
 
     create :concept_solution, user: user_1, exercise: wip
     assert_equal [wip], Exercise.started(user_track_1).order(:id)
@@ -74,6 +75,30 @@ class ExerciseTest < ActiveSupport::TestCase
     create :practice_solution, user: user_1, exercise: deprecated
     assert_equal [wip, beta, deprecated], Exercise.started(user_track_1).order(:id)
     assert_equal [active], Exercise.started(user_track_2).order(:id)
+  end
+
+  test "scope :available" do
+    track = create :track
+    wip = create :concept_exercise, status: :wip, track: track
+    beta = create :practice_exercise, status: :beta, track: track
+    active = create :concept_exercise, status: :active, track: track
+    deprecated = create :practice_exercise, status: :deprecated, track: track
+
+    user_1 = create :user
+    user_2 = create :user
+    user_track_1 = create :user_track, track: track, user: user_1
+    user_track_2 = create :user_track, track: track, user: user_2
+
+    assert_equal [beta, active], Exercise.available(user_track_1).order(:id)
+    assert_equal [beta, active], Exercise.available(user_track_2).order(:id)
+
+    create :practice_solution, user: user_1, exercise: deprecated
+    assert_equal [beta, active, deprecated], Exercise.available(user_track_1).order(:id)
+    assert_equal [beta, active], Exercise.available(user_track_2).order(:id)
+
+    create :practice_solution, user: user_2, exercise: wip
+    assert_equal [beta, active, deprecated], Exercise.available(user_track_1).order(:id)
+    assert_equal [wip, beta, active], Exercise.available(user_track_2).order(:id)
   end
 
   test "prerequisite_exercises" do
