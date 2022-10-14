@@ -48,7 +48,7 @@ class UserTrack
     end
 
     def enabled_exercises(exercises)
-      exercises.where(status: %i[active beta])
+      exercises.published
     end
 
     #######################

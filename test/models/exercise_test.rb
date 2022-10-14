@@ -27,6 +27,15 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal [exercise_2], Exercise.without_prerequisites
   end
 
+  test "scope :published" do
+    create :concept_exercise, status: :wip
+    beta = create :concept_exercise, status: :beta
+    active = create :concept_exercise, status: :active
+    create :concept_exercise, status: :deprecated
+
+    assert_equal [beta, active], Exercise.published
+  end
+
   test "scope :sorted" do
     exercise_1 = create :practice_exercise, position: 0
     exercise_2 = create :concept_exercise, position: 1

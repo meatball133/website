@@ -58,6 +58,7 @@ class Exercise < ApplicationRecord
     source: :contributor
 
   scope :sorted, -> { order(:position) }
+  scope :published, -> { where(status: %i[active beta]) }
 
   scope :without_prerequisites, lambda {
     where.not(id: Exercise::Prerequisite.select(:exercise_id))
