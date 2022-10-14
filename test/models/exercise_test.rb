@@ -45,6 +45,37 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal [exercise_1, exercise_2, exercise_3, exercise_4], Exercise.sorted
   end
 
+  test "scope :started" do
+    track = create :track
+    wip = create :concept_exercise, status: :wip, track: track
+    beta = create :practice_exercise, status: :beta, track: track
+    active = create :concept_exercise, status: :active, track: track
+    deprecated = create :practice_exercise, status: :deprecated, track: track
+
+    user_1 = create :user
+    user_2 = create :user
+    user_track_1 = create :user_track, track: track, user: user_1
+    user_track_2 = create :user_track, track: track, user: user_2
+
+    assert_empty Exercise.started(user_track_1)
+
+    create :concept_solution, user: user_1, exercise: wip
+    assert_equal [wip], Exercise.started(user_track_1).order(:id)
+    assert_empty Exercise.started(user_track_2).order(:id)
+
+    create :practice_solution, user: user_1, exercise: beta
+    assert_equal [wip, beta], Exercise.started(user_track_1).order(:id)
+    assert_empty Exercise.started(user_track_2).order(:id)
+
+    create :concept_solution, user: user_2, exercise: active
+    assert_equal [wip, beta], Exercise.started(user_track_1).order(:id)
+    assert_equal [active], Exercise.started(user_track_2).order(:id)
+
+    create :practice_solution, user: user_1, exercise: deprecated
+    assert_equal [wip, beta, deprecated], Exercise.started(user_track_1).order(:id)
+    assert_equal [active], Exercise.started(user_track_2).order(:id)
+  end
+
   test "prerequisite_exercises" do
     strings = create :concept
     bools = create :concept
