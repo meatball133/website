@@ -176,9 +176,8 @@ class TrackTest < ActiveSupport::TestCase
     assert_nil Track.for_repo("exercism/configlet")
   end
 
-  test "recache_num_exercises!" do
-    track = create :track
-    track.recache_num_exercises!
+  test "num_exercises" do
+    track = create :track, course: true
     assert_equal 0, track.num_exercises
 
     create :practice_exercise, track: track, status: :beta
@@ -189,6 +188,9 @@ class TrackTest < ActiveSupport::TestCase
 
     create :practice_exercise, track: track, status: :wip
     assert_equal 2, track.num_exercises
+
+    track.update!(course: false)
+    assert_equal 1, track.reload.num_exercises
   end
 
   test "representations" do

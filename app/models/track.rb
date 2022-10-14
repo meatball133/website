@@ -29,6 +29,10 @@ class Track < ApplicationRecord
   delegate :debugging_instructions, :representer_normalizations, to: :git
   delegate :content, :edit_url, to: :mentoring_notes, prefix: :mentoring_notes
 
+  after_commit do
+    recache_num_exercises! if saved_changes.key?("course")
+  end
+
   def self.for!(param)
     return param if param.is_a?(Track)
     return find_by!(id: param) if param.is_a?(Numeric)
@@ -42,7 +46,8 @@ class Track < ApplicationRecord
   end
 
   def recache_num_exercises!
-    update_column(:num_exercises, exercises.where(status: %i[active beta]).count)
+    enabled_exercises = course? ? exercises : practice_exercises
+    update_column(:num_exercises, enabled_exercises.where(status: %i[active beta]).count)
   end
 
   def to_param = slug
