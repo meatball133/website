@@ -21,18 +21,18 @@ class UserTrack
     def solutions = Solution.none
 
     memoize
-    def exercises = track.available_exercises.published
+    def exercises = track.exercises.published(track)
 
     memoize
-    def concept_exercises = track.available_concept_exercises.published
+    def concept_exercises = track.concept_exercises.published(track)
 
     memoize
-    def practice_exercises = track.available_practice_exercises.published
+    def practice_exercises = track.practice_exercises.published(track)
 
-    def concept_exercises_for_concept(concept) = concept.concept_exercises.published
-    def practice_exercises_for_concept(concept) = concept.practice_exercises.published
+    def concept_exercises_for_concept(concept) = concept.concept_exercises.published(track)
+    def practice_exercises_for_concept(concept) = concept.practice_exercises.published(track)
     def unlocked_concepts_for_exercise(exercise) = exercise.unlocked_concepts
-    def unlocked_exercises_for_exercise(exercise) = exercise.unlocked_exercises.published
+    def unlocked_exercises_for_exercise(exercise) = exercise.unlocked_exercises.published(track)
 
     #######################
     # Non-summary methods #

@@ -28,12 +28,13 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test "scope :published" do
-    track = create :track, course: true
+    track = create :track
     create :concept_exercise, status: :wip, track: track
     beta = create :concept_exercise, status: :beta, track: track
     active = create :practice_exercise, status: :active, track: track
     create :concept_exercise, status: :deprecated, track: track
 
+    track.update(course: true)
     assert_equal [beta, active], Exercise.published(track)
 
     track.update(course: false)
@@ -61,6 +62,7 @@ class ExerciseTest < ActiveSupport::TestCase
     user_track_1 = create :user_track, track: track, user: user_1
     user_track_2 = create :user_track, track: track, user: user_2
 
+    track.update(course: true)
     assert_empty Exercise.started(user_track_1)
     assert_empty Exercise.started(user_track_2)
 
@@ -79,10 +81,14 @@ class ExerciseTest < ActiveSupport::TestCase
     create :practice_solution, user: user_1, exercise: deprecated
     assert_equal [wip, beta, deprecated], Exercise.started(user_track_1).order(:id)
     assert_equal [active], Exercise.started(user_track_2).order(:id)
+
+    track.update(course: false)
+    assert_equal [wip, beta, deprecated], Exercise.started(user_track_1).order(:id)
+    assert_equal [active], Exercise.started(user_track_2).order(:id)
   end
 
   test "scope :available" do
-    track = create :track, course: true
+    track = create :track
     wip = create :concept_exercise, status: :wip, track: track
     beta = create :practice_exercise, status: :beta, track: track
     active = create :concept_exercise, status: :active, track: track
@@ -93,6 +99,7 @@ class ExerciseTest < ActiveSupport::TestCase
     user_track_1 = create :user_track, track: track, user: user_1
     user_track_2 = create :user_track, track: track, user: user_2
 
+    track.update(course: true)
     assert_equal [beta, active], Exercise.available(user_track_1).order(:id)
     assert_equal [beta, active], Exercise.available(user_track_2).order(:id)
 
