@@ -58,9 +58,10 @@ class Exercise < ApplicationRecord
     source: :contributor
 
   scope :sorted, -> { order(:position) }
-  scope :published, -> { where(status: %i[active beta]) }
+  scope :course, ->(track) { where(type: PracticeExercise.model_name.name) unless track.course? }
+  scope :published, ->(track) { where(status: %i[active beta]).course(track) }
   scope :started, ->(user_track) { where(id: user_track.solutions.select(:exercise_id)) }
-  scope :available, ->(user_track) { published.or(started(user_track)) }
+  scope :available, ->(user_track) { published(user_track.track).or(started(user_track)) }
 
   scope :without_prerequisites, lambda {
     where.not(id: Exercise::Prerequisite.select(:exercise_id))

@@ -19,7 +19,7 @@ class UserTrack < ApplicationRecord
     primary_key: :user_id,
     inverse_of: :user_track
 
-  delegate :num_concepts, to: :track
+  delegate :num_concepts, :course?, to: :track
   delegate :title, to: :track, prefix: true
 
   before_create do
