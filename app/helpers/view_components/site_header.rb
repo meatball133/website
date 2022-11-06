@@ -99,7 +99,7 @@ module ViewComponents
       items = [
         { html: link_to("Home", Exercism::Routes.root_path, "data-turbo-frame": "tf-main"), className: "opt site-link" },
         { html: link_to("Language Tracks", Exercism::Routes.tracks_path, "data-turbo-frame": "tf-main"), className: "opt site-link" },
-        { html: link_to("Contribute", Exercism::Routes.contributing_root_path, "data-turbo-frame": "tf-main"),
+        { html: link_to("Community", Exercism::Routes.community_path, "data-turbo-frame": "tf-main"),
           className: "opt site-link" },
         { html: link_to("Mentoring", Exercism::Routes.mentoring_path, "data-turbo-frame": "tf-main"), className: "opt site-link" },
         { html: link_to("Donate 💜", Exercism::Routes.donate_path, "data-turbo-frame": "tf-main"), className: "opt site-link donate" }
